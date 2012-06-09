@@ -10,8 +10,8 @@ so that you can fall asleep to your favorite white noise.
 
 Requirements
 ============
-Python >= 2.6
-VLC
+ - Python >= 2.6
+ - VLC
 
 How It Works
 ============
