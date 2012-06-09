@@ -7,13 +7,13 @@ import platform
 import json
 
 def setVolume(volume):
-  if platform.system() == 'Dawin':
+  if platform.system() == 'Darwin':
     subprocess.Popen('osascript -e "set Volume ' + str(volume) + '"', shell=True)
   else:
     subprocess.Popen('pactl set-sink-volume 0 ' + str(volume *10) + '%', shell=True)
 
 def runvlc(file1, file2, file3):
-  if platform.system() == 'Dawin':
+  if platform.system() == 'Darwin':
     subprocess.Popen([
       "/Applications/VLC.app/Contents/MacOS/VLC",
       "--play-and-exit",
@@ -29,7 +29,6 @@ def runvlc(file1, file2, file3):
       file1,
       file2,
       file3])
-
 
 
 
