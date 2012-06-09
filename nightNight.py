@@ -56,7 +56,7 @@ def playFiles(potentialFiles, volume):
   print potentialFiles[pos2]
   print potentialFiles[pos3]
   runvlc(potentialFiles[pos1], potentialFiles[pos2], potentialFiles[pos3])
-  if platform.system() == 'Dawin':
+  if platform.system() == 'Darwin':
     subprocess.Popen("osascript -e 'tell application \"VLC\"' -e 'activate' -e 'end tell'", shell=True)
 
 
