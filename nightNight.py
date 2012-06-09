@@ -7,31 +7,18 @@ import platform
 import json
 import re
 
+def getVlcCommand():
+  if platform.system() == 'Darwin':
+    return "/Applications/VLC.app/Contents/MacOS/VLC"
+  else:
+    return "vlc"
+
+
 def setVolume(volume):
   if platform.system() == 'Darwin':
     subprocess.Popen('osascript -e "set Volume ' + str(volume) + '"', shell=True)
   else:
     subprocess.Popen('pactl set-sink-volume 0 ' + str(volume *10) + '%', shell=True)
-
-def runvlc(file1, file2, file3):
-  if platform.system() == 'Darwin':
-    subprocess.Popen([
-      "/Applications/VLC.app/Contents/MacOS/VLC",
-      "--play-and-exit",
-      "--fullscreen",
-      file1,
-      file2,
-      file3])
-  else:
-    subprocess.Popen([
-      "vlc",
-      "--play-and-exit",
-      "--fullscreen",
-      file1,
-      file2,
-      file3])
-
-
 
 
 def getSettingsFileName():
@@ -55,7 +42,14 @@ def playFiles(potentialFiles, volume):
   print potentialFiles[pos1]
   print potentialFiles[pos2]
   print potentialFiles[pos3]
-  runvlc(potentialFiles[pos1], potentialFiles[pos2], potentialFiles[pos3])
+  subprocess.Popen([
+    getVlcCommand(),
+    "--play-and-exit",
+    "-f",
+    "--video-on-top",
+    potentialFiles[pos1],
+    potentialFiles[pos2],
+    potentialFiles[pos3]])
   if platform.system() == 'Darwin':
     subprocess.Popen("osascript -e 'tell application \"VLC\"' -e 'activate' -e 'end tell'", shell=True)
 
