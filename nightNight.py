@@ -5,6 +5,7 @@ import subprocess
 import argparse
 import platform
 import json
+import re
 
 def setVolume(volume):
   if platform.system() == 'Darwin':
@@ -41,7 +42,8 @@ def getFiles(entry):
   if os.path.isdir(entry):
     for file in os.listdir(entry):
       toReturn.extend(getFiles(entry+"/"+file))
-  elif "ehthumbs.db" not in entry and "Thumbs.db" not in entry:
+  #this regex should be configurable
+  elif re.match("(.*\.avi)|(.*\.mkv)", entry):
     toReturn.append(entry)
   return toReturn
 
