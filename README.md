@@ -41,7 +41,11 @@ would be used. But if we wanted to fall asleep to Futurama we would simply use t
     python nightNight.py -w futurama
 
 Note that your settings file should also contain a volume setting. This is the volume your computer
-will be set to when you run NightNight.
+will be set to when you run NightNight. In addition, you can also manually
+specify the path to your vlc executable by adding the "vlc_executable" attribute
+to the settings file like so
+
+    "vlc_executable" : "/path/to/executable"
 
 Once NightNight has choosen a directory, it will recursively scan through that directory looking
 for video files. When it finds all of them, it will then pick three at random and play them in 
