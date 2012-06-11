@@ -16,8 +16,8 @@ Requirements
 How It Works
 ============
 NightNight first checks your configuration file, `.night_night_settings`, which should be in your
-home folder. It uses this to decide what videos to play. The settings file is in JSON format and 
-a typical one looks like this:
+home folder. It uses this to decide what videos to play. The settings file is in JSON format.  
+A typical settings file for Mac/Linux looks like this:
 
     {
       "volume" : 2,
@@ -32,6 +32,23 @@ a typical one looks like this:
         }
       ]
     }
+
+A typical settings file for Windows looks like this:
+
+    {
+      "volume" : 2,
+      "watch_options" : [
+        {
+          "name" : "default",
+          "directory" : "C:\\Users\\kurtis\\Desktop\\AngryBoys"
+        }
+        {
+          "name" : "futurama",
+          "directory" : "C:\\Users\\kurtis\\Desktop\\Furutama"
+        }
+      ]
+    }
+
 
 By default, NightNight will play videos from the watch option with the name "default". However, if
 you have more than one watch option you can choose to play it by specifying it's name with the `-w` 
