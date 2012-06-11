@@ -46,3 +46,16 @@ will be set to when you run NightNight.
 Once NightNight has choosen a directory, it will recursively scan through that directory looking
 for video files. When it finds all of them, it will then pick three at random and play them in 
 VLC for you.
+
+Who Are You?
+============
+
+My name is [Kurtis Nusbaum][kln].
+I really like computers and programming.
+
+License
+=======
+NightNight is licensed under the [GPLv2][gpl].
+
+[kln]:https://github.com/klnusbaum/
+[gpl]:https://github.com/klnusbaum/NightNight/blob/master/LICENSE
