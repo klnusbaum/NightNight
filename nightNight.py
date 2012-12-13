@@ -1,4 +1,24 @@
 #!/usr/bin/env python
+
+"""
+Copyright 2011 Kurtis L. Nusbaum
+
+This file is part of NightNight.
+
+NightNight is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 2 of the License, or
+(at your option) any later version.
+
+NightNight is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with NightNight.  If not, see <http://www.gnu.org/licenses/>.
+"""
+
 import os
 import random
 import subprocess
@@ -7,9 +27,11 @@ import platform
 import json
 import re
 
-def getVlcCommand():
+def getVlcExecutable():
   if platform.system() == 'Darwin':
     return "/Applications/VLC.app/Contents/MacOS/VLC"
+  elif platform.system() == 'Windows':
+    return "C:\\Program Files\\VideoLAN\\VLC\\VLC.exe"
   else:
     return "vlc"
 
@@ -17,12 +39,15 @@ def getVlcCommand():
 def setVolume(volume):
   if platform.system() == 'Darwin':
     subprocess.Popen('osascript -e "set Volume ' + str(volume) + '"', shell=True)
+  elif platform.system() == 'Windows':
+    # Don't know how to do this in windows yet. Someone wanna figure it out?
+    pass
   else:
     subprocess.Popen('pactl set-sink-volume 0 ' + str(volume *10) + '%', shell=True)
 
 
 def getSettingsFileName():
-  return os.path.join(os.getenv("HOME"), ".night_night_settings")
+  return os.path.join(os.path.expanduser('~'), ".night_night_settings")
 
 def getFiles(entry):
   toReturn = []
@@ -34,7 +59,7 @@ def getFiles(entry):
     toReturn.append(entry)
   return toReturn
 
-def playFiles(potentialFiles, volume):
+def playFiles(potentialFiles, vlc_executable, volume):
   setVolume(volume)
   pos1 = random.randint(0,len(potentialFiles)-1)
   pos2 = random.randint(0,len(potentialFiles)-1)
@@ -43,7 +68,7 @@ def playFiles(potentialFiles, volume):
   print potentialFiles[pos2]
   print potentialFiles[pos3]
   subprocess.Popen([
-    getVlcCommand(),
+    vlc_executable,
     "--play-and-exit",
     "-f",
     "--video-on-top",
@@ -55,9 +80,9 @@ def playFiles(potentialFiles, volume):
 
 
 
-def startNightNight(directory, volume):
+def startNightNight(directory, vlc_executable, volume):
   potentialFiles = getFiles(directory)
-  playFiles(potentialFiles, volume)
+  playFiles(potentialFiles, vlc_executable, volume)
 
 
 parser = argparse.ArgumentParser()
@@ -69,10 +94,11 @@ args = parser.parse_args()
 try:
   settingsFile = open(getSettingsFileName(), 'r')
 except IOError as e:
-  print "Couldn't open settings file"
+  print "Couldn't open settings file. Are you sure it exists?"
   exit(1)
 
-settings = json.loads(settingsFile.read())
+settingsString = settingsFile.read()
+settings = json.loads(settingsString)
 watch_options = settings['watch_options']
 towatch = None
 for watch_option in watch_options:
@@ -85,7 +111,8 @@ if towatch != None:
     print "Watch option \"{0}\" has invalid directory name \"{1}\".".format(args.towatch, towatch)
     exit(1)
   else:
-    startNightNight(towatch, settings["volume"])
+    vlc_executable = settings.get('vlc_executable', getVlcExecutable())
+    startNightNight(towatch, vlc_executable,settings["volume"])
 else:
   print "No watch option with the name %s." % args.towatch
   exit(1)
