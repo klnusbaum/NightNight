@@ -81,7 +81,11 @@ for watch_option in watch_options:
     break
 
 if towatch != None:
-  startNightNight(towatch, settings["volume"])
+  if not os.path.exists(towatch) or not os.path.isdir(towatch):
+    print "Watch option \"{0}\" has invalid directory name \"{1}\".".format(args.towatch, towatch)
+    exit(1)
+  else:
+    startNightNight(towatch, settings["volume"])
 else:
   print "No watch option with the name %s." % args.towatch
   exit(1)
