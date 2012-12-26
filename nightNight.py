@@ -61,20 +61,18 @@ def getFiles(entry):
 
 def playFiles(potentialFiles, vlc_executable, volume):
   setVolume(volume)
-  pos1 = random.randint(0,len(potentialFiles)-1)
-  pos2 = random.randint(0,len(potentialFiles)-1)
-  pos3 = random.randint(0,len(potentialFiles)-1)
-  print potentialFiles[pos1]
-  print potentialFiles[pos2]
-  print potentialFiles[pos3]
+  to_play = random.sample(potentialFiles, 3)
+  print to_play[0]
+  print to_play[1]
+  print to_play[2]
   subprocess.Popen([
     vlc_executable,
     "--play-and-exit",
     "-f",
     "--video-on-top",
-    potentialFiles[pos1],
-    potentialFiles[pos2],
-    potentialFiles[pos3]])
+    to_play[0],
+    to_play[1],
+    to_play[2]])
   if platform.system() == 'Darwin':
     subprocess.Popen("osascript -e 'tell application \"VLC\"' -e 'activate' -e 'end tell'", shell=True)
 
