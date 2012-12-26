@@ -51,13 +51,12 @@ def getSettingsFileName():
 
 def getFiles(entry):
   toReturn = []
-  if os.path.isdir(entry):
-    for file in os.listdir(entry):
-      toReturn.extend(getFiles(entry+"/"+file))
-  #this regex should be configurable
-  elif re.match(r'(.*\.avi)|(.*\.mkv)', entry):
-    toReturn.append(entry)
+  for dirpath, _, files in os.walk(entry, followlinks=True):
+    for f in files:
+      if re.match(r'(.*\.avi)|(.*\.mkv)', f):
+        toReturn.append(os.path.join(dirpath, f))
   return toReturn
+
 
 def playFiles(potentialFiles, vlc_executable, volume):
   setVolume(volume)
