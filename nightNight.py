@@ -55,7 +55,7 @@ def getFiles(entry):
     for file in os.listdir(entry):
       toReturn.extend(getFiles(entry+"/"+file))
   #this regex should be configurable
-  elif re.match("(.*\.avi)|(.*\.mkv)", entry):
+  elif re.match(r'(.*\.avi)|(.*\.mkv)', entry):
     toReturn.append(entry)
   return toReturn
 
