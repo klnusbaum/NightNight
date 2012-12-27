@@ -60,7 +60,7 @@ def getFiles(entry):
 
 def playFiles(potentialFiles, vlc_executable, volume):
   setVolume(volume)
-  to_play = random.sample(potentialFiles, 3)
+  to_play = random.sample(potentialFiles, 3) if len(potentialFiles) > 3 else potentialFiles
   print to_play[0]
   print to_play[1]
   print to_play[2]
