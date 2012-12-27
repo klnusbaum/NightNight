@@ -66,7 +66,13 @@ to the settings file like so
 
 Once NightNight has choosen a directory, it will recursively scan through that directory looking
 for video files. When it finds all of them, it will then pick three at random and play them in 
-VLC for you.
+VLC for you. Video files are found using a regular expression that matches `.avi` and `.mkv` files. This
+regulare expression is customizable. Simply add the `video_file_regex` setting to your `.night_night_settings` file. For
+example, if you only wanted to look for `.mkv` files, you could set the following in your `.night_night_settings` file (note how the "\" needs to be escaped):
+
+    "video_file_regex" : ".*\\.mkv"
+
+
 
 Who Are You?
 ============

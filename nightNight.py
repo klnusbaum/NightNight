@@ -27,6 +27,9 @@ import platform
 import json
 import re
 
+
+DEFAULT_VIDEO_FILE_REGEX = r'(.*\.avi)|(.*\.mkv)'
+
 def getVlcExecutable():
   if platform.system() == 'Darwin':
     return "/Applications/VLC.app/Contents/MacOS/VLC"
@@ -49,14 +52,14 @@ def setVolume(volume):
 def getSettingsFileName():
   return os.path.join(os.path.expanduser('~'), ".night_night_settings")
 
-def getFiles(entry):
+def getFiles(entry, video_file_regex):
   toReturn = []
   for dirpath, _, files in os.walk(entry, followlinks=True):
     for f in files:
-      if re.match(r'(.*\.avi)|(.*\.mkv)', f):
+      if re.match(video_file_regex, f):
         toReturn.append(os.path.join(dirpath, f))
   if len(toReturn) < 1:
-    print "Could not find any video files in \"{0}\".".format(entry)
+    print "Could not find any video files in \"{0}\" while using the regular expression \"{1}\".".format(entry, video_file_regex)
     exit(1)
   return toReturn
 
@@ -76,8 +79,8 @@ def playFiles(potentialFiles, vlc_executable, volume):
 
 
 
-def startNightNight(directory, vlc_executable, volume):
-  potentialFiles = getFiles(directory)
+def startNightNight(directory, vlc_executable, volume, video_file_regex):
+  potentialFiles = getFiles(directory, video_file_regex)
   playFiles(potentialFiles, vlc_executable, volume)
 
 
@@ -108,7 +111,8 @@ if towatch != None:
     exit(1)
   else:
     vlc_executable = settings.get('vlc_executable', getVlcExecutable())
-    startNightNight(towatch, vlc_executable,settings["volume"])
+    video_file_regex = settings.get('video_file_regex', DEFAULT_VIDEO_FILE_REGEX)
+    startNightNight(towatch, vlc_executable, settings["volume"], video_file_regex)
 else:
   print "No watch option with the name %s." % args.towatch
   exit(1)
