@@ -55,23 +55,21 @@ def getFiles(entry):
     for f in files:
       if re.match(r'(.*\.avi)|(.*\.mkv)', f):
         toReturn.append(os.path.join(dirpath, f))
+  if len(toReturn) < 1:
+    raise RuntimeError("Couldn't find any video files in "+ entry)
   return toReturn
 
 
 def playFiles(potentialFiles, vlc_executable, volume):
   setVolume(volume)
-  to_play = random.sample(potentialFiles, 3) if len(potentialFiles) > 3 else potentialFiles
-  print to_play[0]
-  print to_play[1]
-  print to_play[2]
-  subprocess.Popen([
-    vlc_executable,
-    "--play-and-exit",
-    "-f",
-    "--video-on-top",
-    to_play[0],
-    to_play[1],
-    to_play[2]])
+  to_play = random.sample(potentialFiles, 3) if len(potentialFiles) >= 3 else potentialFiles
+  for f in to_play:
+    print f
+
+  args = [vlc_executable, "--play-and-exit", "-f", "--video-on-top"]
+  args.extend(to_play)
+  subprocess.Popen(args)
+
   if platform.system() == 'Darwin':
     subprocess.Popen("osascript -e 'tell application \"VLC\"' -e 'activate' -e 'end tell'", shell=True)
 
