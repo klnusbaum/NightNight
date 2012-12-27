@@ -56,7 +56,8 @@ def getFiles(entry):
       if re.match(r'(.*\.avi)|(.*\.mkv)', f):
         toReturn.append(os.path.join(dirpath, f))
   if len(toReturn) < 1:
-    raise RuntimeError("Couldn't find any video files in "+ entry)
+    print "Could not find any video files in \"{0}\".".format(entry)
+    exit(1)
   return toReturn
 
 
