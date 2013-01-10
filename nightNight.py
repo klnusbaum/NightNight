@@ -85,7 +85,8 @@ def startNightNight(directory, vlc_executable, volume, video_file_regex):
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-w', '--towatch', default="default")
+parser.add_argument('-w', '--towatch', help="Specify which watch option you would like to watch", default="default")
+parser.add_argument('-lw', '--list-watch-options', help="list all of the possible watch options", action="store_true")
 args = parser.parse_args()
 
 
@@ -99,6 +100,15 @@ except IOError as e:
 settingsString = settingsFile.read()
 settings = json.loads(settingsString)
 watch_options = settings['watch_options']
+
+if args.list_watch_options:
+  max_len = max(len(wo['name']) for wo in watch_options) +1
+  print ("{:<" + str(max_len) + "}  {}").format("Name", "Directory")
+  for watch_option in watch_options:
+    print ("{:<" + str(max_len) + "}  {}").format(watch_option['name'], watch_option['directory'])
+  exit(0)
+
+
 towatch = None
 for watch_option in watch_options:
   if watch_option['name'] == args.towatch:
